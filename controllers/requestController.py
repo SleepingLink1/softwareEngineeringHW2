@@ -70,6 +70,11 @@ class requestController:
         Session = sessionmaker(bind=engine)
         session = Session()
 
+        existing_requests = session.query(request).filter_by(employeeID=employee_id).all()
+        for existing_requests in existing_requests:
+            if (start_date <= existing_requests.endLeaveDate and end_date >= existing_requests.startLeaveDate):
+                return "Error: New request overlaps with an existing request."
+
         new_request = request(requestReason=reason, startLeaveDate=start_date, endLeaveDate=end_date, leaveType=leaveType, employeeID=employee_id,requestStatus=status)
         session.add(new_request)
         session.commit()
