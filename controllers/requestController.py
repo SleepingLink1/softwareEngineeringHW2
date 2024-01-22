@@ -5,7 +5,7 @@ from models.request import request
 
 class requestController:
 
-    def get_request_and_employee_data():
+    def get_request_and_employee_data(self):
         engine = create_engine('sqlite:///HRLeaveRequest.db', echo=True)
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -13,66 +13,64 @@ class requestController:
         employeereqeuests = session.query(request, employee).join(employee, request.employeeID == employee.employeeID).all()
         return employeereqeuests
 
-    def get_requests():
+    def get_requests(self):
         engine = create_engine('sqlite:///HRLeaveRequest.db', echo=True)
         Session = sessionmaker(bind=engine)
         session = Session()
 
         requests = session.query(request).all()
         return requests
-    
-    def get_request_by_id(id):
+
+    def get_request_by_id(self, id):
         engine = create_engine('sqlite:///HRLeaveRequest.db', echo=True)
         Session = sessionmaker(bind=engine)
         session = Session()
 
-        request = session.query(request).filter_by(id=id).first()
-        return request
-    
-    def get_request_by_employee_id(employee_id):
+        req = session.query(request).filter_by(id=id).first()
+        return req
+
+    def get_request_by_employee_id(self, employee_id):
         engine = create_engine('sqlite:///HRLeaveRequest.db', echo=True)
         Session = sessionmaker(bind=engine)
         session = Session()
 
-        request = session.query(request).filter_by(employee_id=employee_id).first()
-        return request
-    
-    def get_request_by_status(status):
+        req = session.query(request).filter_by(employee_id=employee_id).first()
+        return req
+
+    def get_request_by_status(self, status):
         engine = create_engine('sqlite:///HRLeaveRequest.db', echo=True)
         Session = sessionmaker(bind=engine)
         session = Session()
 
-        request = session.query(request).filter_by(status=status).all()
-        return request
-    
-    def update_request(id, status):
+        req = session.query(request).filter_by(status=status).all()
+        return req
+
+    def update_request(self, id, status):
         engine = create_engine('sqlite:///HRLeaveRequest.db', echo=True)
         Session = sessionmaker(bind=engine)
         session = Session()
 
-        request = session.query(request).filter_by(id=id).first()
-        request.status = status
+        req = session.query(request).filter_by(id=id).first()
+        req.status = status
         session.commit()
-        return request
-    
-    def delete_request(id):
+        return req
+
+    def delete_request(self, id):
         engine = create_engine('sqlite:///HRLeaveRequest.db', echo=True)
         Session = sessionmaker(bind=engine)
         session = Session()
 
-        request = session.query(request).filter_by(id=id).first()
-        session.delete(request)
+        req = session.query(request).filter_by(id=id).first()
+        session.delete(req)
         session.commit()
-        return request
-    
-    def create_request(employee_id, start_date, end_date, leaveType, reason, status):
+        return req
+
+    def create_request(self, employee_id, start_date, end_date, leaveType, reason, status):
         engine = create_engine('sqlite:///HRLeaveRequest.db', echo=True)
         Session = sessionmaker(bind=engine)
         session = Session()
 
-# request = R÷equest('1', '2022-01-01', 'Vacation', 'Pending', 'Annual', '2022-02-01', '2022-02-07', '123')
         new_request = request(requestReason=reason, startLeaveDate=start_date, endLeaveDate=end_date, leaveType=leaveType, employeeID=employee_id,requestStatus=status)
         session.add(new_request)
         session.commit()
         return new_request
-    

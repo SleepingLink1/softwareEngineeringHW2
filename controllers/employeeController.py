@@ -4,7 +4,7 @@ from models.employee import employee
 
 class employeeController:
 
-    def get_employees():
+    def get_employees(self):
         engine = create_engine('sqlite:///HRLeaveRequest.db', echo=True)
         Session = sessionmaker(bind=engine)
         session = Session()
