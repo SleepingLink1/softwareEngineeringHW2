@@ -62,6 +62,8 @@ class requestController:
         session = Session()
 
         req = session.query(request).filter_by(id=id).first()
+        if req.startLeaveDate <= datetime.now.toString():
+            return "Error: Cannot delete a request that has already started."
         session.delete(req)
         session.commit()
         return req
