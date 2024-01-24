@@ -1,3 +1,5 @@
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models.employee import employee
@@ -69,6 +71,10 @@ class requestController:
         engine = create_engine('sqlite:///HRLeaveRequest.db', echo=True)
         Session = sessionmaker(bind=engine)
         session = Session()
+        endDateObj = datetime.strptime(end_date, '%Y-%m-%d')
+        twoMonthsFromNow = datetime.now() + relativedelta(months=+2)
+        if endDateObj > twoMonthsFromNow:
+            return "Cannot request more than 2 months in advance"
 
         existing_requests = session.query(request).filter_by(employeeID=employee_id).all()
         for existing_requests in existing_requests:
